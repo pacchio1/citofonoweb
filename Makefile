@@ -71,7 +71,7 @@ all: $(PROGRAMS) $(DOOR_TOOLS) $(LOGGER_TOOLS)
 .PHONY: all
 
 door_open.o: door_open.c
-	$(CC)  door_open.o -o door_open  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
+	$(CC)  door_open.c -o door_open  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 door_open: door_open.o
 	$(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
@@ -83,7 +83,7 @@ badge_daemon: badge_daemon.o
 	$(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
 badge_logger: badge_logger.c badge_logger_common.o f_lock.o
-	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
+	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS) $^ -o $@
 
 badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
 	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
@@ -92,7 +92,7 @@ badge_logger_common.o: badge_logger_common.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 f_lock.o: f_lock.c
-	$(CC) f_lock.c -o f_lock.o -c $(CFLAGS) $(OPTIONS)
+	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 gpio.o: gpio.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
