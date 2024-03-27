@@ -31,7 +31,7 @@ ifneq "$(BOARD)" "RASPBERRY"
 	override CFLAGS+= -march=native
     endif
 else
-    override CFLAGS+= -march=native 
+    override CFLAGS+= -march=native
 endif
 
 #ifeq ("$(BACKEND)","mysql")
@@ -74,7 +74,7 @@ door_open.o: door_open.c
 	$(CC)  door_open.o -o door_open  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 door_open: door_open.o
-	$(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"' 
+	$(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 badge_daemon.o: badge_daemon.c
 	$(CC) $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
@@ -83,7 +83,7 @@ badge_daemon: badge_daemon.o
 	$(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
 badge_logger: badge_logger.c badge_logger_common.o f_lock.o
-	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
+	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
 
 badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
 	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
@@ -98,10 +98,10 @@ gpio.o: gpio.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 buzzer: buzzer.c gpio.o
-	$(CC) buzzer.c gpio.o -o buzzer $(CFLAGS) $(OPTIONS) -std=gnu99 
+	$(CC) buzzer.c gpio.o -o buzzer $(CFLAGS) $(OPTIONS) -std=gnu99
 
 lcdscreen: lcdscreen.c gpio.o f_lock.o
-	$(CC) lcdscreen.c gpio.o f_lock.o -o lcdscreen $(CFLAGS) $(OPTIONS) -std=gnu99 
+	$(CC) lcdscreen.c gpio.o f_lock.o -o lcdscreen $(CFLAGS) $(OPTIONS) -std=gnu99
 gpio:
 .PHONY: gpio
 
