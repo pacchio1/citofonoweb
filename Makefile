@@ -74,7 +74,7 @@ door_open.o: door_open.c
 	$(CC)  door_open.c -o door_open.o  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 door_open: door_open.o
-	$(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"''
+	$(CC)  door_open.c door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 badge_daemon.o: badge_daemon.c
 	$(CC) $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"' -c badge_daemon.c -o badge_daemon.o
