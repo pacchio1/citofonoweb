@@ -71,7 +71,7 @@ all: $(PROGRAMS) $(DOOR_TOOLS) $(LOGGER_TOOLS)
 .PHONY: all
 
 door_open.o: door_open.c
-        $(CC)  door_open.o -o door_open  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
+        $(CC) door_open.o -o door_open  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 door_open: door_open.o
         $(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
