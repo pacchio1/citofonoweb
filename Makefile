@@ -44,7 +44,7 @@ endif
 #    override LIBS+=-DSQLITE_B -lsqlite3
 #endif
 
-neq ("$(wildcard /usr/local/include/json-c)","")
+ifneq ("$(wildcard /usr/local/include/json-c)","")
     override LIBS+=-ljson-c
 endif
 ifneq ("$(wildcard /usr/local/include/json-c)","")
