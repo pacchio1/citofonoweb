@@ -92,7 +92,7 @@ badge_logger_common.o: badge_logger_common.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 f_lock.o: f_lock.c
-	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
+	$(CC) f_lock.c -o f_lock.o -c $(CFLAGS) $(OPTIONS)
 
 gpio.o: gpio.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
