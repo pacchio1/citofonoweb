@@ -31,20 +31,20 @@ ifneq "$(BOARD)" "RASPBERRY"
 	override CFLAGS+= -march=native
     endif
 else
-    override CFLAGS+= -march=native
+    override CFLAGS+= -march=native 
 endif
 
 #ifeq ("$(BACKEND)","mysql")
 #    ifeq ("$(wildcard /usr/bin/mariadb_config)","")
-#       override LIBS+=-DMYSQL_B `mysql_config --cflags --libs`
+#	override LIBS+=-DMYSQL_B `mysql_config --cflags --libs`
 #    else
-        override LIBS+=-DMYSQL_B -DMARIADB_B `mariadb_config --cflags --libs` -lmariadb
+	override LIBS+=-DMYSQL_B -DMARIADB_B `mariadb_config --cflags --libs` -lmariadb
 #    endif
 #else
 #    override LIBS+=-DSQLITE_B -lsqlite3
 #endif
 
-ifneq ("$(wildcard /usr/local/include/json-c)","")
+ifneq ("$(wildcard /usr/include/json-c)","")
     override LIBS+=-ljson-c
 endif
 ifneq ("$(wildcard /usr/local/include/json-c)","")
@@ -71,38 +71,37 @@ all: $(PROGRAMS) $(DOOR_TOOLS) $(LOGGER_TOOLS)
 .PHONY: all
 
 door_open.o: door_open.c
-    $(CC) $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'  door_open.o -o door_open
+	$(CC)  door_open.o -o door_open  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
 door_open: door_open.o
-    $(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
+	$(CC)  door_open.o -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"' 
 
 badge_daemon.o: badge_daemon.c
-    $(CC) $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
+	$(CC) $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
 
 badge_daemon: badge_daemon.o
-    $(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
+	$(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
 badge_logger: badge_logger.c badge_logger_common.o f_lock.o
-    $(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
+	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
 
 badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
-    $(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
+	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
 
 badge_logger_common.o: badge_logger_common.c
-    $(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
+	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 f_lock.o: f_lock.c
-    $(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
+	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 gpio.o: gpio.c
-    $(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
+	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 buzzer: buzzer.c gpio.o
-    $(CC) buzzer.c gpio.o -o buzzer $(CFLAGS) $(OPTIONS) -std=gnu99
+	$(CC) buzzer.c gpio.o -o buzzer $(CFLAGS) $(OPTIONS) -std=gnu99 
 
 lcdscreen: lcdscreen.c gpio.o f_lock.o
-    $(CC) lcdscreen.c gpio.o f_lock.o -o lcdscreen $(CFLAGS) $(OPTIONS) -std=gnu99
-
+	$(CC) lcdscreen.c gpio.o f_lock.o -o lcdscreen $(CFLAGS) $(OPTIONS) -std=gnu99 
 gpio:
 .PHONY: gpio
 
