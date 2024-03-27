@@ -80,7 +80,7 @@ badge_daemon.o: badge_daemon.c
     $(CC) $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"' -c badge_daemon.c -o badge_daemon.o
 
 badge_daemon: badge_daemon.o
-	$(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
+    $(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
 badge_logger: badge_logger.c badge_logger_common.o f_lock.o
 	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
