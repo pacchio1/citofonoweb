@@ -83,13 +83,13 @@ badge_daemon: badge_daemon.o
 	$(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
 badge_logger: badge_logger.c badge_logger_common.o f_lock.o
-	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS) $^ -o $@
+	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
 
 badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
 	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
 
 badge_logger_common.o: badge_logger_common.c
-	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS) $< -o $@ -c
+	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
 
 f_lock.o: f_lock.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
