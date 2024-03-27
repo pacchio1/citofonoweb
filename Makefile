@@ -89,7 +89,7 @@ badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
 	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
 
 badge_logger_common.o: badge_logger_common.c
-	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
+	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS) $< -o $@ -c
 
 f_lock.o: f_lock.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
