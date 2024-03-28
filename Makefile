@@ -76,8 +76,8 @@ door_open: door_open.o
 badge_daemon: badge_daemon.o badge_logger_common.o f_lock.o
 	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
-badge_daemon.o: badge_daemon.c badge_logger_common.h f_lock.h
-	$(CC) $< -o $@ -c $(CFLAGS) $(OPTIONS)
+# badge_daemon.o: badge_daemon.c badge_logger_common.h f_lock.h
+# 	$(CC) $< -o $@ -c $(CFLAGS) $(OPTIONS)
 
 badge_logger: badge_logger.o badge_logger_common.o f_lock.o
 	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
