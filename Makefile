@@ -76,9 +76,6 @@ door_open.o: door_open.c
 door_open: door_open.o
 	$(CC)  door_open.c -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
 
-badge_daemon: badge_daemon.o badge_logger_common.o f_lock.o
-	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
-
 badge_logger: badge_logger.c badge_logger_common.o f_lock.o
 	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
 
@@ -87,6 +84,9 @@ badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
 
 badge_logger_common.o: badge_logger_common.c
 	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
+
+badge_daemon: badge_daemon.o badge_logger_common.o f_lock.o
+	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
 f_lock.o: f_lock.c
 	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
