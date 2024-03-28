@@ -70,41 +70,26 @@ OPTIONS:= -D_BOARD=$(BOARD)
 all: $(PROGRAMS) $(DOOR_TOOLS) $(LOGGER_TOOLS)
 .PHONY: all
 
-door_open.o: door_open.c
-	$(CC)  door_open.c -o door_open.o  $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
-
 door_open: door_open.o
-	$(CC)  door_open.c -o door_open $(CFLAGS) $(LIBS) $(OPTIONS) -std=gnu99 -DCONFPATH='"$(confdir)"'
+	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
 
-badge_daemon: badge_daemon.c
-	$(CC) badge_daemon.c -o badge_daemon.o $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
+badge_daemon: badge_daemon.o badge_logger_common.o f_lock.o
+	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
 
-badge_daemon.o: badge_daemon.c
-	$(CC) badge_daemon.c -o badge_daemon.o $(CFLAGS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
+badge_logger: badge_logger.o badge_logger_common.o f_lock.o
+	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
 
-badge_daemon: badge_daemon.o
-	$(CC) badge_logger.c badge_logger_common.o f_lock.o -o badge_logger $(CFLAGS) $(OPTIONS) -lpthread -DCONFPATH='"$(confdir)"'
+badge_uploader: badge_uploader.o badge_logger_common.o f_lock.o
+	$(CC) $^ -o $@ $(CFLAGS) $(LIBS) $(OPTIONS) -DCONFPATH='"$(confdir)"'
 
-badge_logger: badge_logger.c badge_logger_common.o f_lock.o
-	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
+buzzer: buzzer.o gpio.o
+	$(CC) $^ -o $@ $(CFLAGS) $(OPTIONS)
 
-badge_uploader: badge_uploader.c badge_logger_common.o f_lock.o
-	$(CC) $(CFLAGS) $(OPTIONS) $^ -o $@
+lcdscreen: lcdscreen.o gpio.o f_lock.o
+	$(CC) $^ -o $@ $(CFLAGS) $(OPTIONS)
 
-badge_logger_common.o: badge_logger_common.c
-	$(CC) badge_logger_common.c -o badge_logger_common.o -c $(CFLAGS) $(OPTIONS)
-
-f_lock.o: f_lock.c
-	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
-
-gpio.o: gpio.c
-	$(CC) $(CFLAGS) $(OPTIONS) $< -o $@ -c
-
-buzzer: buzzer.c gpio.o
-	$(CC) buzzer.c gpio.o -o buzzer $(CFLAGS) $(OPTIONS) -std=gnu99
-
-lcdscreen: lcdscreen.c gpio.o f_lock.o
-	$(CC) lcdscreen.c gpio.o f_lock.o -o lcdscreen $(CFLAGS) $(OPTIONS) -std=gnu99
+%.o: %.c
+	$(CC) $< -o $@ -c $(CFLAGS) $(OPTIONS)
 gpio:
 .PHONY: gpio
 
